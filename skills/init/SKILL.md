@@ -10,12 +10,43 @@ You are scaffolding a complete harness for the current project. Follow these ste
 ## Step 0: Pre-flight Checks
 
 Before anything:
-1. Check if `AGENTS.md`, `scripts/harness/`, or `.claude/settings.json` already exist in the project root.
-2. If ANY exist, warn the user: **"Existing harness detected. Running /harn:init will update these files. Proceed?"** Wait for confirmation before continuing.
-3. Verify core dependencies are available:
+
+1. Verify core dependencies are available:
    - `jq` — run `command -v jq`
    - `python3` — run `command -v python3`
    If either is missing, tell the user to install them first and stop.
+
+2. Check if `AGENTS.md`, `scripts/harness/`, or `.claude/settings.json` already exist in the project root.
+
+3. If ANY exist, **assess each file** against the templates in this skill:
+   - Read each existing file
+   - Compare to the template version (Steps 2-6)
+   - Classify each as: `up-to-date`, `outdated` (missing sections/patterns), or `customized` (user modifications beyond template)
+
+4. Present a summary table and recommendation:
+
+   ```
+   Existing harness assessment:
+   | File                    | Status      | Action       |
+   |-------------------------|-------------|--------------|
+   | AGENTS.md               | up-to-date  | skip         |
+   | security_guard.py       | outdated    | update       |
+   | quality_gate.sh         | customized  | skip (manual)|
+   | trace_logger.sh         | missing     | create       |
+   | .claude/settings.json   | up-to-date  | skip         |
+
+   Recommendation: Update 1 file, create 1 file. 2 files unchanged.
+   Proceed?
+   ```
+
+   - `up-to-date` → skip (no changes needed)
+   - `outdated` → recommend update (template has improvements)
+   - `customized` → skip and flag for manual review (don't overwrite user work)
+   - `missing` → create
+
+   Wait for user confirmation before proceeding. Only touch files marked for update/create.
+
+5. If NO harness files exist, proceed directly to Step 1 (fresh scaffold).
 
 ## Step 1: Detect Tech Stack
 
