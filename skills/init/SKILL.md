@@ -188,6 +188,17 @@ Create `.claude/settings.json` in the user's project with hook wiring:
 }
 ```
 
+## Step 5b: Offer Additional Hooks (Optional)
+
+Tell the user about additional harness capabilities they can add:
+
+- **Auto-formatter** (`/harn:format`): PostToolUse hook that runs prettier/black/rustfmt on every file edit
+- **Trace logging** (`/harn:trace`): PostToolUse hook that logs all tool calls to JSONL for debugging
+- **Checkpoint artifacts** (`/harn:checkpoint`): LEARNED.md + CHECKPOINT.json for session recovery
+- **MCP health check** (`/harn:mcp-check`): Validates MCP servers are running on session start
+
+These are opt-in. The core harness (security guard + quality gate) is always generated.
+
 ## Step 6: Commit and push
 
 After creating all files, ensure they're executable where needed, then commit the changes.

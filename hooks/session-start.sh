@@ -40,6 +40,29 @@ else
   MISSING=$((MISSING + 1))
 fi
 
+# Check for PostToolUse hooks (formatters)
+if [ -f "${PROJECT_ROOT}/scripts/harness/auto_formatter.sh" ]; then
+  STATUS="${STATUS}  Formatter: found\n"
+else
+  STATUS="${STATUS}  Formatter: not configured (run /harn:format)\n"
+fi
+
+# Check for checkpoint artifacts
+if [ -f "${PROJECT_ROOT}/CHECKPOINT.json" ] || [ -f "${PROJECT_ROOT}/LEARNED.md" ]; then
+  STATUS="${STATUS}  Checkpoint: found\n"
+  if [ -f "${PROJECT_ROOT}/CHECKPOINT.json" ]; then
+    TASK=$(cat "${PROJECT_ROOT}/CHECKPOINT.json" | jq -r '.current_task // empty' 2>/dev/null)
+    if [ -n "$TASK" ]; then
+      echo "Harn: Last task: ${TASK}" >&2
+    fi
+  fi
+fi
+
+# Check MCP server health
+if [ -f "${PROJECT_ROOT}/scripts/harness/mcp_health.sh" ]; then
+  bash "${PROJECT_ROOT}/scripts/harness/mcp_health.sh" 2>&1 || true
+fi
+
 # Output to stderr (shown to agent)
 if [ "${MISSING}" -gt 0 ]; then
   echo "Harn: ${MISSING} harness component(s) missing. Run /harn:init to scaffold." >&2

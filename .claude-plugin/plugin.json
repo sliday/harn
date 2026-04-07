@@ -1,7 +1,7 @@
 {
   "name": "harn",
-  "description": "Harness Engineering for AI coding agents — CAR framework, security guardrails, quality gates, progressive disclosure",
-  "version": "1.0.0",
+  "description": "Harness Engineering for AI coding agents — CAR framework, security guardrails, quality gates, auto-formatters, trace logging, checkpoints, MCP validation",
+  "version": "1.1.0",
   "author": {
     "name": "Stas Kulesh",
     "email": "stas@sliday.com"
@@ -9,5 +9,5 @@
   "homepage": "https://harn.app",
   "repository": "https://github.com/sliday/harn",
   "license": "MIT",
-  "keywords": ["harness", "engineering", "agents", "security", "hooks", "guardrails", "CAR"]
+  "keywords": ["harness", "engineering", "agents", "security", "hooks", "guardrails", "CAR", "formatter", "trace", "checkpoint", "MCP", "observability"]
 }
