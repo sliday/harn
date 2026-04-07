@@ -54,14 +54,15 @@ Make the file executable (`chmod +x`).
 
 ```bash
 # --- Harn Checkpoint Resume ---
-if [ -f "CHECKPOINT.json" ]; then
-  TASK=$(python3 -c "import json,sys; d=json.load(open('CHECKPOINT.json')); print(d.get('current_task',''))" 2>/dev/null || echo "")
-  NOTES=$(python3 -c "import json,sys; d=json.load(open('CHECKPOINT.json')); print(d.get('context_notes',''))" 2>/dev/null || echo "")
-  if [ -n "$TASK" ]; then
-    echo "Harn: Checkpoint found — last task: $TASK" >&2
-  fi
-  if [ -n "$NOTES" ]; then
-    echo "Harn: Context notes: $NOTES" >&2
+# Why: https://harn.app/kb/context.html — "Structured note-taking"
+if [ -f "${PROJECT_ROOT}/CHECKPOINT.json" ]; then
+  if ! jq empty "${PROJECT_ROOT}/CHECKPOINT.json" 2>/dev/null; then
+    echo "Harn: CHECKPOINT.json is malformed — ignoring" >&2
+  else
+    TASK=$(jq -r '.current_task // empty' "${PROJECT_ROOT}/CHECKPOINT.json" 2>/dev/null)
+    if [ -n "$TASK" ]; then
+      echo "Harn: Resuming — last task: ${TASK}" >&2
+    fi
   fi
 fi
 # --- End Checkpoint Resume ---

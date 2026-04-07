@@ -36,3 +36,39 @@ Check each artifact against these rules:
 - All paths are valid
 
 Output a pass/fail for each artifact with specific issues found.
+
+## Verification Checklist (check each item)
+
+### AGENTS.md
+- [ ] Under 100 lines (FAIL if over 300)
+- [ ] No directory tree listings (FAIL if found)
+- [ ] Has North Star section
+- [ ] Has Constraints section
+- [ ] Has Hooks Active section
+- [ ] References skills for detailed rules
+- [ ] Has Escape Hatches section
+
+### security_guard.py
+- [ ] Valid Python syntax
+- [ ] Reads JSON from stdin with try/except
+- [ ] Has isinstance(payload, dict) type check
+- [ ] Checks tool_name == "Bash"
+- [ ] Has >= 5 dangerous patterns
+- [ ] Has try/except around re.search
+- [ ] Exits 2 to block, 0 to allow
+- [ ] Has KB reference comment
+
+### quality_gate.sh
+- [ ] Valid bash with set -euo pipefail
+- [ ] Checks stop_hook_active to prevent loops
+- [ ] Uses session-aware temp file (not hardcoded /tmp)
+- [ ] Has command -v check before running checker
+- [ ] Detects at least one tech stack
+- [ ] Exits 2 to block, 0 to allow
+- [ ] Has KB reference comment
+
+### .claude/settings.json
+- [ ] PreToolUse hook references security_guard
+- [ ] Stop hook references quality_gate
+- [ ] All script paths are valid and files exist
+- [ ] Timeout values are reasonable (5s for PreToolUse, 30s for Stop)

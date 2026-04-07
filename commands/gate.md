@@ -1,5 +1,6 @@
 ---
 description: "Generate or update quality gate Stop hook"
+allowed-tools: "Read,Write,Edit,Bash,Glob"
 disable-model-invocation: true
 ---
 

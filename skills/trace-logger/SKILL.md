@@ -18,8 +18,18 @@ Generate a PostToolUse hook that logs all tool calls to JSONL for debugging and 
 
 set -euo pipefail
 
+# Harn trace logger — records all tool calls for observability
+# Why: https://harn.app/kb/evals.html — "Testing Agent Skills Systematically"
+
+command -v jq &>/dev/null || exit 0
+
 LOG_FILE=".claude/agent-trace.jsonl"
 mkdir -p "$(dirname "$LOG_FILE")"
+
+# Rotate log if > 5000 lines
+if [ -f "$LOG_FILE" ] && [ "$(wc -l < "$LOG_FILE" 2>/dev/null)" -gt 5000 ]; then
+  tail -2500 "$LOG_FILE" > "${LOG_FILE}.tmp" && mv "${LOG_FILE}.tmp" "$LOG_FILE"
+fi
 
 # Read hook JSON payload from stdin
 PAYLOAD="$(cat 2>/dev/null || echo '{}')"

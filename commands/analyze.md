@@ -1,5 +1,6 @@
 ---
 description: "Audit your project's harness against the CAR framework"
+allowed-tools: "Read,Bash,Glob,Grep"
 disable-model-invocation: true
 ---
 

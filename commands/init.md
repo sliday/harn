@@ -1,5 +1,7 @@
 ---
 description: "Scaffold a complete harness for the current project — AGENTS.md, hooks, guardrails"
+allowed-tools: "Read,Write,Edit,Bash,Glob,Grep"
+argument-hint: "[stack: auto|ts|rust|go|python]"
 disable-model-invocation: true
 ---
 

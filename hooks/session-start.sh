@@ -4,6 +4,10 @@
 
 set -euo pipefail
 
+# Soft dependency — skip advanced checks if jq missing
+HAS_JQ=false
+command -v jq &>/dev/null && HAS_JQ=true
+
 PROJECT_ROOT="${PWD}"
 STATUS=""
 MISSING=0
@@ -50,10 +54,14 @@ fi
 # Check for checkpoint artifacts
 if [ -f "${PROJECT_ROOT}/CHECKPOINT.json" ] || [ -f "${PROJECT_ROOT}/LEARNED.md" ]; then
   STATUS="${STATUS}  Checkpoint: found\n"
-  if [ -f "${PROJECT_ROOT}/CHECKPOINT.json" ]; then
-    TASK=$(cat "${PROJECT_ROOT}/CHECKPOINT.json" | jq -r '.current_task // empty' 2>/dev/null)
-    if [ -n "$TASK" ]; then
-      echo "Harn: Last task: ${TASK}" >&2
+  if [ -f "${PROJECT_ROOT}/CHECKPOINT.json" ] && [ "$HAS_JQ" = true ]; then
+    if jq empty "${PROJECT_ROOT}/CHECKPOINT.json" 2>/dev/null; then
+      TASK=$(jq -r '.current_task // empty' "${PROJECT_ROOT}/CHECKPOINT.json" 2>/dev/null)
+      if [ -n "$TASK" ]; then
+        echo "Harn: Resuming — last task: ${TASK}" >&2
+      fi
+    else
+      echo "Harn: CHECKPOINT.json is malformed" >&2
     fi
   fi
 fi

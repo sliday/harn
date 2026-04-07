@@ -1,5 +1,6 @@
 ---
 description: "Build or rebuild AGENTS.md with progressive disclosure"
+allowed-tools: "Read,Write,Edit,Glob,Grep"
 disable-model-invocation: true
 ---
 

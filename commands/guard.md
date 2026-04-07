@@ -1,5 +1,6 @@
 ---
 description: "Generate or update security guardrail hooks"
+allowed-tools: "Read,Write,Edit,Bash,Glob"
 disable-model-invocation: true
 ---
 
